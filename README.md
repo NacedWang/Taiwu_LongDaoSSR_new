@@ -19,9 +19,13 @@
 基于原EA版 龙岛忠仆 https://github.com/NacedWang/Taiwu_LongDaoSSR  做正式版的适配改造
 
 
-> 目前学习教程中，预计十一更新
+> 目前学习教程中，预计十一更新（咕）
 
 
 ```
 本人是Java程序员，基于 B站 宵夜97 大佬教程 ，自制MOD
+```
+
+```
+蛐蛐群 ID Naced ，有bug可以去群里@我
 ```
