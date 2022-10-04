@@ -49,6 +49,13 @@ return {
 			DefaultValue = true,
 		},
 		{
+			Key = "FeatureDead",
+			SettingType = "Toggle",
+			DisplayName = "活死人",
+			Description = "获取活死人特质",
+			DefaultValue = true,
+		},
+		{
 			Key = "SkillAdd",
 			DisplayName = "资质加成",
 			Description = "忠仆的各项资质会基于太吾获得加成（百分比）",

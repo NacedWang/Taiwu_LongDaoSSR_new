@@ -42,6 +42,7 @@ namespace LongDaoSSR.src
         private static bool FeatureRead;
         private static bool FeatureOld;
         private static bool FeatureDao;
+        private static bool FeatureDead;
         private static int SkillAdd;
         private static int SkillMin;
         private static int SkillRandom;
@@ -57,6 +58,7 @@ namespace LongDaoSSR.src
             DomainManager.Mod.GetSetting(base.ModIdStr, "FeatureRead", ref FulongServantSSR.FeatureRead);
             DomainManager.Mod.GetSetting(base.ModIdStr, "FeatureOld", ref FulongServantSSR.FeatureOld);
             DomainManager.Mod.GetSetting(base.ModIdStr, "FeatureDao", ref FulongServantSSR.FeatureDao);
+            DomainManager.Mod.GetSetting(base.ModIdStr, "FeatureDead", ref FulongServantSSR.FeatureDead);
             DomainManager.Mod.GetSetting(base.ModIdStr, "SkillAdd", ref FulongServantSSR.SkillAdd);
             DomainManager.Mod.GetSetting(base.ModIdStr, "SkillMin", ref FulongServantSSR.SkillMin);
             DomainManager.Mod.GetSetting(base.ModIdStr, "SkillRandom", ref FulongServantSSR.SkillRandom);
@@ -108,6 +110,7 @@ namespace LongDaoSSR.src
             List<short> orgFeatureList = new List<short>(character.GetFeatureIds());
             orgFeatureList.ForEach(featureId =>
             {
+                // 删除旧特质
                 if (featureId <= 164)
                 {
                     character.RemoveFeature(domain.MainThreadDataContext, featureId);
@@ -117,7 +120,6 @@ namespace LongDaoSSR.src
                     AdaptableLog.Info("原抓周特性 " + Convert.ToString(featureId));
                     character.RemoveFeature(domain.MainThreadDataContext, featureId);
                     character.AddFeature(domain.MainThreadDataContext, (short)(171 + context.Random.Next(11)), false);
-                    //  birthFeature = featureId;
                 }
             });
 
@@ -131,7 +133,7 @@ namespace LongDaoSSR.src
             // 各项配置  max 164 ,%6 ,min 0,
             if (BasicFeatures > 0)
             {
-                // 最多尝试 27 次
+                // 最多尝试 50 次
                 while (count < BasicFeatures && tryFeatureTime < 50)
                 {
                     tryFeatureTime++;
@@ -165,6 +167,11 @@ namespace LongDaoSSR.src
             if (FeatureDao)
             {
                 character.AddFeature(domain.MainThreadDataContext, 200, false);
+            } 
+            //活死人
+            if (FeatureDead)
+            {
+                character.AddFeature(domain.MainThreadDataContext, 337, false);
             }
 
             // 成长 均衡 不好使
@@ -179,7 +186,6 @@ namespace LongDaoSSR.src
 
 
             // 技艺
-            //taiwuChar.GetBaseLifeSkillQualifications
             for (int i = 0; i < 16; i++)
             {
                 decimal taiwuBonus = 0;
@@ -192,6 +198,7 @@ namespace LongDaoSSR.src
                 AdaptableLog.Info("太吾技艺资质加成: " + Convert.ToString(taiwuBonus));
                 character.GetBaseLifeSkillQualifications().Items[i] = finalSkill;
             }
+            // 永久更新资质
             character.SetBaseLifeSkillQualifications(ref character.GetBaseLifeSkillQualifications(), domain.MainThreadDataContext);
 
             // 武学
@@ -207,6 +214,7 @@ namespace LongDaoSSR.src
                 AdaptableLog.Info("太吾战斗资质加成: " + Convert.ToString(taiwuBonus));
                 character.GetBaseCombatSkillQualifications().Items[i] = finalSkill;
             }
+            // 永久更新资质
             character.SetBaseCombatSkillQualifications(ref character.GetBaseCombatSkillQualifications(), domain.MainThreadDataContext);
 
             // 原基础操作
