@@ -11,11 +11,12 @@ using GameData.Domains.Character.Creation;
 using GameData.Domains.Map;
 using GameData.Domains.TaiwuEvent;
 using System.Collections.Generic;
+using Config;
 
 namespace LongDaoSSR.src
 {
 
-    [PluginConfig("LongDaoSSR", "Naced", "1.0.0")]
+    [PluginConfig("LongDaoSSR", "Naced", "1.3.0")]
     public class FulongServantSSR : TaiwuRemakePlugin
     {
 
@@ -36,7 +37,9 @@ namespace LongDaoSSR.src
             AdaptableLog.Info("Initialize  LongDaoSSR");
         }
 
+        // 配置项
         private static bool SameMorality;
+        private static bool SameGender;
         private static bool FeatureDream;
         private static bool FeatureBattle;
         private static bool FeatureRead;
@@ -47,12 +50,13 @@ namespace LongDaoSSR.src
         private static int SkillMin;
         private static int SkillRandom;
         private static int BasicFeatures;
-       
+        private static bool HusbandOrWife;
 
         public override void OnModSettingUpdate()
         {
             AdaptableLog.Info("LongDaoSSR OnModSettingUpdate");
             DomainManager.Mod.GetSetting(base.ModIdStr, "SameMorality", ref FulongServantSSR.SameMorality);
+            DomainManager.Mod.GetSetting(base.ModIdStr, "SameGender", ref FulongServantSSR.SameGender);
             DomainManager.Mod.GetSetting(base.ModIdStr, "FeatureDream", ref FulongServantSSR.FeatureDream);
             DomainManager.Mod.GetSetting(base.ModIdStr, "FeatureBattle", ref FulongServantSSR.FeatureBattle);
             DomainManager.Mod.GetSetting(base.ModIdStr, "FeatureRead", ref FulongServantSSR.FeatureRead);
@@ -63,6 +67,7 @@ namespace LongDaoSSR.src
             DomainManager.Mod.GetSetting(base.ModIdStr, "SkillMin", ref FulongServantSSR.SkillMin);
             DomainManager.Mod.GetSetting(base.ModIdStr, "SkillRandom", ref FulongServantSSR.SkillRandom);
             DomainManager.Mod.GetSetting(base.ModIdStr, "BasicFeatures", ref FulongServantSSR.BasicFeatures);
+            DomainManager.Mod.GetSetting(base.ModIdStr, "HusbandOrWife", ref FulongServantSSR.HusbandOrWife);
             AdaptableLog.Info(string.Format("LongDaoSSR setting : \n SameMorality :{0} \n, FeatureDao : {1} \n, BasicFeatures: {2} ", SameMorality, FeatureDao, BasicFeatures));
         }
 
@@ -72,14 +77,18 @@ namespace LongDaoSSR.src
             AdaptableLog.Info("preCreateFulongServant start");
             TaiwuEventDomain domain = DomainManager.TaiwuEvent;
             DataContext context = domain.MainThreadDataContext;
-            Character taiwuChar = DomainManager.Taiwu.GetTaiwu();
+            GameData.Domains.Character.Character taiwuChar = DomainManager.Taiwu.GetTaiwu();
             Location location = taiwuChar.GetLocation();
             OrganizationInfo orgInfo = taiwuChar.GetOrganizationInfo();
             orgInfo.Grade = 0;
             sbyte gender = 0;
             // 性别
             AdaptableLog.Info("taiwuGender " + Convert.ToString(taiwuChar.GetGender()));
-            if (taiwuChar.GetGender() == gender)
+            if (SameGender)
+            {
+                gender = taiwuChar.GetGender();
+            }
+            else
             {
                 // 改变性别
                 gender = (sbyte)(taiwuChar.GetGender() == 0 ? 1 : 0);
@@ -88,6 +97,8 @@ namespace LongDaoSSR.src
             sbyte growingGrade = (sbyte)context.Random.Next(6);
             sbyte stateTemplateId = DomainManager.Map.GetStateTemplateIdByAreaId(location.AreaId);
             short charTemplateId = OrganizationDomain.GetCharacterTemplateId(growingSectId, stateTemplateId, gender);
+            AdaptableLog.Info("原TemplateId " + Convert.ToString(charTemplateId));
+
             // 年龄
             short age = (short)16;
             IntelligentCharacterCreationInfo info = new IntelligentCharacterCreationInfo(location, orgInfo, charTemplateId)
@@ -99,7 +110,7 @@ namespace LongDaoSSR.src
                 CombatSkillsAdjustBonus = { },
                 InitializeSectSkills = false
             };
-            Character character = DomainManager.Character.CreateIntelligentCharacter(context, ref info);
+            GameData.Domains.Character.Character character = DomainManager.Character.CreateIntelligentCharacter(context, ref info);
             int charId = character.GetId();
             DomainManager.Character.CompleteCreatingCharacter(charId);
             // 年龄
@@ -111,7 +122,7 @@ namespace LongDaoSSR.src
             orgFeatureList.ForEach(featureId =>
             {
                 // 删除旧特质
-                if (featureId <= 164)
+                if (featureId <= 167)
                 {
                     character.RemoveFeature(domain.MainThreadDataContext, featureId);
                 }
@@ -119,13 +130,15 @@ namespace LongDaoSSR.src
                 {
                     AdaptableLog.Info("原抓周特性 " + Convert.ToString(featureId));
                     character.RemoveFeature(domain.MainThreadDataContext, featureId);
-                    character.AddFeature(domain.MainThreadDataContext, (short)(171 + context.Random.Next(11)), false);
                 }
             });
+            // 抓周特质
+            character.AddFeature(domain.MainThreadDataContext, (short)(171 + context.Random.Next(11)), false);
 
             // 龙岛忠仆特性
             character.AddFeature(domain.MainThreadDataContext, 199, false);
 
+            
 
             int count = 0;
             int tryFeatureTime = 0;
@@ -150,28 +163,34 @@ namespace LongDaoSSR.src
             }
             if (FeatureDream)
             {
-                character.AddFeature(domain.MainThreadDataContext, 203, false);
+                character.AddFeature(domain.MainThreadDataContext, CharacterFeature.DefKey.DreamLover, false);
             }
             if (FeatureBattle)
             {
-                character.AddFeature(domain.MainThreadDataContext, 202, false);
+                character.AddFeature(domain.MainThreadDataContext, CharacterFeature.DefKey.CombatSkillLearning, false);
             }
             if (FeatureRead)
             {
-                character.AddFeature(domain.MainThreadDataContext, 201, false);
+                character.AddFeature(domain.MainThreadDataContext, CharacterFeature.DefKey.LifeSkillLearning, false);
             }
             if (FeatureOld)
             {
-                character.AddFeature(domain.MainThreadDataContext, 335, false);
+                character.AddFeature(domain.MainThreadDataContext, CharacterFeature.DefKey.Longevity, false);
             }
             if (FeatureDao)
             {
-                character.AddFeature(domain.MainThreadDataContext, 200, false);
-            } 
+                character.AddFeature(domain.MainThreadDataContext, CharacterFeature.DefKey.ProtectedByPrayer, false);
+            }
             //活死人
             if (FeatureDead)
             {
-                character.AddFeature(domain.MainThreadDataContext, 337, false);
+                character.AddFeature(domain.MainThreadDataContext, CharacterFeature.DefKey.WalkingDead, false);
+            }
+
+            //关系
+            if (HusbandOrWife)
+            {
+                DomainManager.Character.AddHusbandOrWifeRelations(domain.MainThreadDataContext, charId, taiwuChar.GetId(), int.MinValue);
             }
 
             // 成长 均衡 不好使
@@ -191,8 +210,8 @@ namespace LongDaoSSR.src
                 decimal taiwuBonus = 0;
                 if (SkillAdd > 0)
                 {
-                    decimal bonusPercent = decimal.Round((decimal) SkillAdd / (decimal)100 , 2);
-                    taiwuBonus = bonusPercent *  taiwuChar.GetBaseLifeSkillQualifications().Items[i];
+                    decimal bonusPercent = decimal.Round((decimal)SkillAdd / (decimal)100, 2);
+                    taiwuBonus = bonusPercent * taiwuChar.GetBaseLifeSkillQualifications().Items[i];
                 }
                 short finalSkill = (short)(SkillMin + context.Random.Next(SkillRandom) + taiwuBonus);
                 AdaptableLog.Info("太吾技艺资质加成: " + Convert.ToString(taiwuBonus));

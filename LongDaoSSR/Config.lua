@@ -1,9 +1,9 @@
 return {
 	Title = "龙岛忠仆SSR",
-	Version = 1,
+	Version = 3,
 	BackendPlugins = {"LongDaoSSR.dll"}, 
 	Author = "Naced",
-	Description = "龙岛忠仆加强版 https://github.com/NacedWang/Taiwu_LongDaoSSR_new",
+	Description = "龙岛忠仆加强版: 30恩义买不了吃亏买不了上当啦！可自定义忠仆，方便减少SL，寻找继承人/打工人 源码：https://github.com/NacedWang/Taiwu_LongDaoSSR_new",
 	Cover = "logo.png",
 	DefaultSettings = {
 		{
@@ -12,6 +12,13 @@ return {
 			DisplayName = "与太吾同立场",
 			Description = "与太吾同立场",
 			DefaultValue = true,
+		},
+		{
+			Key = "SameGender",
+			SettingType = "Toggle",
+			DisplayName = "与太吾同性别",
+			Description = "与太吾同性别",
+			DefaultValue = false,
 		},
 		{
 			Key = "FeatureDream",
@@ -52,7 +59,7 @@ return {
 			Key = "FeatureDead",
 			SettingType = "Toggle",
 			DisplayName = "活死人",
-			Description = "获取活死人特质",
+			Description = "获取活死人特质（仅特质）",
 			DefaultValue = true,
 		},
 		{
@@ -94,6 +101,13 @@ return {
 			MinValue = 0,
 			MaxValue = 10,
 			StepSize = 1,
+		},
+		{
+			Key = "HusbandOrWife",
+			SettingType = "Toggle",
+			DisplayName = "与太吾成为夫妻",
+			Description = "与太吾成为夫妻（注：会出现击剑情况QAQ）",
+			DefaultValue = false,
 		},
 	}
 }
