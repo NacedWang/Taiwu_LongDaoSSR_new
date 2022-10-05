@@ -16,7 +16,7 @@ using Config;
 namespace LongDaoSSR.src
 {
 
-    [PluginConfig("LongDaoSSR", "Naced", "1.3.0")]
+    [PluginConfig("LongDaoSSR", "Naced", "1.4.0")]
     public class FulongServantSSR : TaiwuRemakePlugin
     {
 
@@ -208,12 +208,20 @@ namespace LongDaoSSR.src
             for (int i = 0; i < 16; i++)
             {
                 decimal taiwuBonus = 0;
+                // 太吾资质增加量
                 if (SkillAdd > 0)
                 {
                     decimal bonusPercent = decimal.Round((decimal)SkillAdd / (decimal)100, 2);
                     taiwuBonus = bonusPercent * taiwuChar.GetBaseLifeSkillQualifications().Items[i];
                 }
-                short finalSkill = (short)(SkillMin + context.Random.Next(SkillRandom) + taiwuBonus);
+                // 随机资质增加量
+                int randomBonus = 0;
+                if (SkillRandom > 0)
+                {
+                    randomBonus = context.Random.Next(SkillRandom);
+                } 
+                // 最终资质值
+                short finalSkill = (short)(SkillMin + randomBonus + taiwuBonus);
                 AdaptableLog.Info("太吾技艺资质加成: " + Convert.ToString(taiwuBonus));
                 character.GetBaseLifeSkillQualifications().Items[i] = finalSkill;
             }
@@ -224,12 +232,20 @@ namespace LongDaoSSR.src
             for (int i = 0; i < 14; i++)
             {
                 decimal taiwuBonus = 0;
+                // 太吾资质增加量
                 if (SkillAdd > 0)
                 {
                     decimal bonusPercent = decimal.Round((decimal)SkillAdd / (decimal)100, 2);
                     taiwuBonus = bonusPercent * taiwuChar.GetBaseCombatSkillQualifications().Items[i];
                 }
-                short finalSkill = (short)(SkillMin + context.Random.Next(SkillRandom) + taiwuBonus);
+                // 随机资质增加量
+                int randomBonus = 0;
+                if (SkillRandom > 0)
+                {
+                    randomBonus = context.Random.Next(SkillRandom);
+                }
+                // 最终资质值
+                short finalSkill = (short)(SkillMin + randomBonus + taiwuBonus);
                 AdaptableLog.Info("太吾战斗资质加成: " + Convert.ToString(taiwuBonus));
                 character.GetBaseCombatSkillQualifications().Items[i] = finalSkill;
             }
