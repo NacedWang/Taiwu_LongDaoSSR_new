@@ -1,9 +1,14 @@
 return {
 	Title = "龙岛忠仆SSR",
-	Version = 3,
+	Version = 5,
+	Source = 1,
+	FileId = 2871632253,
 	BackendPlugins = {"LongDaoSSR.dll"}, 
 	Author = "Naced",
-	Description = "龙岛忠仆加强版: 30恩义买不了吃亏买不了上当啦！可自定义忠仆，方便减少SL，寻找继承人/打工人 源码：https://github.com/NacedWang/Taiwu_LongDaoSSR_new",
+	Description = "龙岛忠仆加强版: 30恩义买不了吃亏买不了上当啦！\
+可自定义忠仆，方便减少SL，寻找继承人/打工人 \
+可配置项：立场、性别、特质、资质、主属性、关系等\
+源码：https://github.com/NacedWang/Taiwu_LongDaoSSR_new",
 	Cover = "logo.png",
 	DefaultSettings = {
 		{
@@ -60,7 +65,7 @@ return {
 			SettingType = "Toggle",
 			DisplayName = "活死人",
 			Description = "获取活死人特质（仅特质）",
-			DefaultValue = true,
+			DefaultValue = false,
 		},
 		{
 			Key = "SkillAdd",
@@ -93,11 +98,31 @@ return {
 			StepSize = 10,
 		},
 		{
+			Key = "MainAttributeMin",
+			DisplayName = "主要属性最小值",
+			Description = "忠仆的主要属性最小值（膂力、悟性等）",
+			SettingType = "Slider",
+			DefaultValue = 50,
+			MinValue = 0,
+			MaxValue = 100,
+			StepSize = 10,
+		},
+			{
+			Key = "MainAttributeRandom",
+			DisplayName = "主要属性随机量",
+			Description = "忠仆的主要属性会随机增加，数值为0-设置值",
+			SettingType = "Slider",
+			DefaultValue = 40,
+			MinValue = 0,
+			MaxValue = 100,
+			StepSize = 10,
+		},
+		{
 			Key = "BasicFeatures",
 			DisplayName = "特质数",
 			Description = "忠仆可获得的特质数，不会获得负面特质",
 			SettingType = "Slider",
-			DefaultValue = 0,
+			DefaultValue = 3,
 			MinValue = 0,
 			MaxValue = 10,
 			StepSize = 1,

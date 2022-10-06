@@ -49,6 +49,8 @@ namespace LongDaoSSR.src
         private static int SkillAdd;
         private static int SkillMin;
         private static int SkillRandom;
+        private static int MainAttributeMin;
+        private static int MainAttributeRandom;
         private static int BasicFeatures;
         private static bool HusbandOrWife;
 
@@ -66,6 +68,8 @@ namespace LongDaoSSR.src
             DomainManager.Mod.GetSetting(base.ModIdStr, "SkillAdd", ref FulongServantSSR.SkillAdd);
             DomainManager.Mod.GetSetting(base.ModIdStr, "SkillMin", ref FulongServantSSR.SkillMin);
             DomainManager.Mod.GetSetting(base.ModIdStr, "SkillRandom", ref FulongServantSSR.SkillRandom);
+            DomainManager.Mod.GetSetting(base.ModIdStr, "MainAttributeMin", ref FulongServantSSR.MainAttributeMin);
+            DomainManager.Mod.GetSetting(base.ModIdStr, "MainAttributeRandom", ref FulongServantSSR.MainAttributeRandom);
             DomainManager.Mod.GetSetting(base.ModIdStr, "BasicFeatures", ref FulongServantSSR.BasicFeatures);
             DomainManager.Mod.GetSetting(base.ModIdStr, "HusbandOrWife", ref FulongServantSSR.HusbandOrWife);
             AdaptableLog.Info(string.Format("LongDaoSSR setting : \n SameMorality :{0} \n, FeatureDao : {1} \n, BasicFeatures: {2} ", SameMorality, FeatureDao, BasicFeatures));
@@ -116,6 +120,10 @@ namespace LongDaoSSR.src
             // 年龄
             character.SetActualAge(16, domain.MainThreadDataContext);
 
+            // 样貌处理,去掉奇怪的减魅力的项
+            character.GetAvatar().Feature1Id = 1;
+            character.GetAvatar().Feature2Id = 1;
+
             // 特性
             HashSet<short> origFeatureSet = new HashSet<short>();
             List<short> orgFeatureList = new List<short>(character.GetFeatureIds());
@@ -138,7 +146,7 @@ namespace LongDaoSSR.src
             // 龙岛忠仆特性
             character.AddFeature(domain.MainThreadDataContext, 199, false);
 
-            
+
 
             int count = 0;
             int tryFeatureTime = 0;
@@ -177,6 +185,8 @@ namespace LongDaoSSR.src
             {
                 character.AddFeature(domain.MainThreadDataContext, CharacterFeature.DefKey.Longevity, false);
             }
+            // 健康
+            character.SetHealth(character.GetMaxHealth(), domain.MainThreadDataContext);
             if (FeatureDao)
             {
                 character.AddFeature(domain.MainThreadDataContext, CharacterFeature.DefKey.ProtectedByPrayer, false);
@@ -192,7 +202,7 @@ namespace LongDaoSSR.src
             {
                 DomainManager.Character.AddHusbandOrWifeRelations(domain.MainThreadDataContext, charId, taiwuChar.GetId(), int.MinValue);
             }
-
+           
             // 成长 均衡 不好使
             //Traverse.Create(character).Field("_combatSkillQualificationGrowthType").SetValue((sbyte)0);
             //Traverse.Create(character).Field("_lifeSkillQualificationGrowthType").SetValue((sbyte)0);
@@ -203,6 +213,22 @@ namespace LongDaoSSR.src
                 character.SetBaseMorality(taiwuChar.GetBaseMorality(), domain.MainThreadDataContext);
             }
 
+            // 主属性
+            MainAttributes mainAttributes = character.GetBaseMainAttributes();
+            for (int i = 0; i < 6; i++)
+            {
+                // 随机资质增加量
+                int randomBonus = 0;
+                if (MainAttributeRandom > 0)
+                {
+                    randomBonus = context.Random.Next(MainAttributeRandom);
+                }
+                // 最终资质值
+                short finalMainAttribute = (short)(MainAttributeMin + randomBonus);
+                mainAttributes.Items[i] = finalMainAttribute;
+            }
+            character.SetBaseMainAttributes(mainAttributes, domain.MainThreadDataContext);
+            character.SetCurrMainAttributes( character.GetMaxMainAttributes(), domain.MainThreadDataContext);
 
             // 技艺
             for (int i = 0; i < 16; i++)
@@ -219,7 +245,7 @@ namespace LongDaoSSR.src
                 if (SkillRandom > 0)
                 {
                     randomBonus = context.Random.Next(SkillRandom);
-                } 
+                }
                 // 最终资质值
                 short finalSkill = (short)(SkillMin + randomBonus + taiwuBonus);
                 AdaptableLog.Info("太吾技艺资质加成: " + Convert.ToString(taiwuBonus));
