@@ -121,7 +121,7 @@ namespace LongDaoSSR.src
             character.SetActualAge(16, domain.MainThreadDataContext);
 
             // 样貌处理,去掉奇怪的减魅力的项
-            character.GetAvatar().Feature1Id = 1;
+            character.GetAvatar().Feature1Id = (short)context.Random.Next(7);
             character.GetAvatar().Feature2Id = 1;
 
             // 特性
