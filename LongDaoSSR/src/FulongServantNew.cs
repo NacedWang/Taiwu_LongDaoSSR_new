@@ -112,7 +112,9 @@ namespace LongDaoSSR.src
                 GrowingSectGrade = growingGrade,
                 LifeSkillsAdjustBonus = { },
                 CombatSkillsAdjustBonus = { },
-                InitializeSectSkills = false
+                InitializeSectSkills = false,
+                //魅力下限
+                BaseAttraction = 900
             };
             GameData.Domains.Character.Character character = DomainManager.Character.CreateIntelligentCharacter(context, ref info);
             int charId = character.GetId();
