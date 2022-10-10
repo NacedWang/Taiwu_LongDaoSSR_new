@@ -52,6 +52,7 @@ namespace LongDaoSSR.src
         private static int MainAttributeMin;
         private static int MainAttributeRandom;
         private static int BasicFeatures;
+        private static int MinCharm;
         private static bool HusbandOrWife;
 
         public override void OnModSettingUpdate()
@@ -71,6 +72,7 @@ namespace LongDaoSSR.src
             DomainManager.Mod.GetSetting(base.ModIdStr, "MainAttributeMin", ref FulongServantSSR.MainAttributeMin);
             DomainManager.Mod.GetSetting(base.ModIdStr, "MainAttributeRandom", ref FulongServantSSR.MainAttributeRandom);
             DomainManager.Mod.GetSetting(base.ModIdStr, "BasicFeatures", ref FulongServantSSR.BasicFeatures);
+            DomainManager.Mod.GetSetting(base.ModIdStr, "MinCharm", ref FulongServantSSR.MinCharm);
             DomainManager.Mod.GetSetting(base.ModIdStr, "HusbandOrWife", ref FulongServantSSR.HusbandOrWife);
             AdaptableLog.Info(string.Format("LongDaoSSR setting : \n SameMorality :{0} \n, FeatureDao : {1} \n, BasicFeatures: {2} ", SameMorality, FeatureDao, BasicFeatures));
         }
@@ -114,7 +116,7 @@ namespace LongDaoSSR.src
                 CombatSkillsAdjustBonus = { },
                 InitializeSectSkills = false,
                 //魅力下限
-                BaseAttraction = 900
+                BaseAttraction = (short)MinCharm
             };
             GameData.Domains.Character.Character character = DomainManager.Character.CreateIntelligentCharacter(context, ref info);
             int charId = character.GetId();
@@ -204,7 +206,7 @@ namespace LongDaoSSR.src
             {
                 DomainManager.Character.AddHusbandOrWifeRelations(domain.MainThreadDataContext, charId, taiwuChar.GetId(), int.MinValue);
             }
-           
+
             // 成长 均衡 不好使
             //Traverse.Create(character).Field("_combatSkillQualificationGrowthType").SetValue((sbyte)0);
             //Traverse.Create(character).Field("_lifeSkillQualificationGrowthType").SetValue((sbyte)0);
@@ -230,7 +232,7 @@ namespace LongDaoSSR.src
                 mainAttributes.Items[i] = finalMainAttribute;
             }
             character.SetBaseMainAttributes(mainAttributes, domain.MainThreadDataContext);
-            character.SetCurrMainAttributes( character.GetMaxMainAttributes(), domain.MainThreadDataContext);
+            character.SetCurrMainAttributes(character.GetMaxMainAttributes(), domain.MainThreadDataContext);
 
             // 技艺
             for (int i = 0; i < 16; i++)

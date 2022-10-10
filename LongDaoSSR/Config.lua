@@ -1,6 +1,6 @@
 return {
 	Title = "龙岛忠仆SSR",
-	Version = 6,
+	Version = 7,
 	Source = 1,
 	FileId = 2871632253,
 	BackendPlugins = {"LongDaoSSR.dll"}, 
@@ -128,6 +128,16 @@ return {
 			StepSize = 1,
 		},
 		[14] ={
+			Key = "MinCharm",
+			DisplayName = "最小魅力",
+			Description = "忠仆最小魅力数，修改的基础魅力，500为出众，每级提升100",
+			SettingType = "Slider",
+			DefaultValue = 600,
+			MinValue = 0,
+			MaxValue = 900,
+			StepSize = 50,
+		},
+		[15] ={
 			Key = "HusbandOrWife",
 			SettingType = "Toggle",
 			DisplayName = "与太吾成为夫妻",
