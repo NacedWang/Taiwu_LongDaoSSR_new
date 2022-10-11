@@ -1,6 +1,6 @@
 return {
 	Title = "龙岛忠仆SSR",
-	Version = 7,
+	Version = 8,
 	Source = 1,
 	FileId = 2871632253,
 	BackendPlugins = {"LongDaoSSR.dll"}, 
@@ -11,63 +11,63 @@ return {
 源码：https://github.com/NacedWang/Taiwu_LongDaoSSR_new",
 	Cover = "logo.png",
 	DefaultSettings = {
-		[0] = {
+		[1] = {
 			Key = "SameMorality",
 			SettingType = "Toggle",
 			DisplayName = "与太吾同立场",
 			Description = "与太吾同立场",
 			DefaultValue = true,
 		},
-		[1] ={
+		[2] ={
 			Key = "SameGender",
 			SettingType = "Toggle",
 			DisplayName = "与太吾同性别",
 			Description = "与太吾同性别",
 			DefaultValue = false,
 		},
-		[2] ={
+		[3] ={
 			Key = "FeatureDream",
 			SettingType = "Toggle",
 			DisplayName = "梦境中人",
 			Description = "获取梦境中人特质",
 			DefaultValue = true,
 		},
-		[3] ={
+		[4] ={
 			Key = "FeatureBattle",
 			SettingType = "Toggle",
 			DisplayName = "神锋敛彩",
 			Description = "获取神锋敛彩特质",
 			DefaultValue = true,
 		},
-		[4] ={
+		[5] ={
 			Key = "FeatureRead",
 			SettingType = "Toggle",
 			DisplayName = "璞玉韬光",
 			Description = "获取璞玉韬光特质",
 			DefaultValue = true,
 		},
-		[5] ={
+		[6] ={
 			Key = "FeatureOld",
 			SettingType = "Toggle",
 			DisplayName = "服芝食玉",
 			Description = "获取服芝食玉特质",
 			DefaultValue = true,
 		},
-		[6] ={
+		[7] ={
 			Key = "FeatureDao",
 			SettingType = "Toggle",
 			DisplayName = "经文祝祷",
 			Description = "获取经文祝祷特质",
 			DefaultValue = true,
 		},
-		[7] ={
+		[8] ={
 			Key = "FeatureDead",
 			SettingType = "Toggle",
 			DisplayName = "活死人",
 			Description = "获取活死人特质（仅特质）",
 			DefaultValue = false,
 		},
-		[8] ={
+		[9] ={
 			Key = "SkillAdd",
 			DisplayName = "资质加成",
 			Description = "忠仆的各项资质会基于太吾获得加成（百分比）",
@@ -77,7 +77,7 @@ return {
 			MaxValue = 100,
 			StepSize = 10,
 		},
-		[9] ={
+		[10] ={
 			Key = "SkillMin",
 			DisplayName = "资质最小值",
 			Description = "忠仆的资质最小值",
@@ -87,7 +87,7 @@ return {
 			MaxValue = 120,
 			StepSize = 10,
 		},
-		[10] ={
+		[11] ={
 			Key = "SkillRandom",
 			DisplayName = "资质随机量",
 			Description = "忠仆的资质会随机增加，数值为0-设置值",
@@ -97,7 +97,7 @@ return {
 			MaxValue = 120,
 			StepSize = 10,
 		},
-		[11] ={
+		[12] ={
 			Key = "MainAttributeMin",
 			DisplayName = "主要属性最小值",
 			Description = "忠仆的主要属性最小值（膂力、悟性等）",
@@ -107,7 +107,7 @@ return {
 			MaxValue = 100,
 			StepSize = 10,
 		},
-		[12] ={
+		[13] ={
 			Key = "MainAttributeRandom",
 			DisplayName = "主要属性随机量",
 			Description = "忠仆的主要属性会随机增加，数值为0-设置值",
@@ -117,7 +117,7 @@ return {
 			MaxValue = 100,
 			StepSize = 10,
 		},
-		[13] ={
+		[14] ={
 			Key = "BasicFeatures",
 			DisplayName = "特质数",
 			Description = "忠仆可获得的特质数，不会获得负面特质",
@@ -127,7 +127,7 @@ return {
 			MaxValue = 10,
 			StepSize = 1,
 		},
-		[14] ={
+		[15] ={
 			Key = "MinCharm",
 			DisplayName = "最小魅力",
 			Description = "忠仆最小魅力数，修改的基础魅力，500为出众，每级提升100",
@@ -137,7 +137,7 @@ return {
 			MaxValue = 900,
 			StepSize = 50,
 		},
-		[15] ={
+		[16] ={
 			Key = "HusbandOrWife",
 			SettingType = "Toggle",
 			DisplayName = "与太吾成为夫妻",
