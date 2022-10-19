@@ -125,8 +125,8 @@ namespace LongDaoSSR.src
             character.SetActualAge(16, domain.MainThreadDataContext);
 
             // 样貌处理,去掉奇怪的减魅力的项
-            character.GetAvatar().Feature1Id = (short)context.Random.Next(7);
-            character.GetAvatar().Feature2Id = 1;
+            //character.GetAvatar().Feature1Id = (short)context.Random.Next(7);
+            //character.GetAvatar().Feature2Id = 1;
 
             // 特性
             HashSet<short> origFeatureSet = new HashSet<short>();
@@ -286,11 +286,8 @@ namespace LongDaoSSR.src
             character.SetIdealSect(growingSectId, context);
             DomainManager.Character.TryCreateGeneralRelation(context, taiwuChar, character);
             DomainManager.Character.ChangeFavorability(context, character, taiwuChar, 10000);
-            DomainManager.Taiwu.JoinGroup(context, charId, true);
-            DomainManager.Taiwu.ReceiveCharacters(context, new int[]
-            {
-                charId
-            });
+            DomainManager.Taiwu.JoinGroup(context, charId);
+            EventHelper.ShowGetItemPageForCharacters(new List<int> { charId }, isVillager: false);
             AdaptableLog.Info("preCreateFulongServant end");
             return false;
         }

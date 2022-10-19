@@ -1,6 +1,6 @@
 return {
 	Title = "龙岛忠仆SSR",
-	Version = 8,
+	Version = 9,
 	Source = 1,
 	FileId = 2871632253,
 	BackendPlugins = {"LongDaoSSR.dll"}, 
